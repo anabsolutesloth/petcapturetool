@@ -1,0 +1,8 @@
+{
+  "item.petcapturetool.pick_up": {
+    "sounds": ["minecraft:block/iron_trapdoor/close1", "minecraft:block/iron_trapdoor/close2", "minecraft:block/iron_trapdoor/close3", "minecraft:block/iron_trapdoor/close4"]
+  },
+  "item.petcapturetool.release": {
+    "sounds": ["minecraft:block/iron_trapdoor/open1", "minecraft:block/iron_trapdoor/open2", "minecraft:block/iron_trapdoor/open3", "minecraft:block/iron_trapdoor/open4"]
+  }
+}

@@ -1,6 +1,7 @@
 package com.emperdog.petcapturetool;
 
 import com.emperdog.petcapturetool.item.PetCaptureItems;
+import com.emperdog.petcapturetool.sound.PetCaptureSoundEvents;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -35,6 +36,7 @@ public class PetCaptureToolMod {
         MinecraftForge.EVENT_BUS.register(this);
 
         PetCaptureItems.register(modEventBus);
+        PetCaptureSoundEvents.register(modEventBus);
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);

@@ -11,7 +11,7 @@ import java.util.*;
 @Mod.EventBusSubscriber(modid = PetCaptureToolMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class PetCaptureToolConfig {
 
-    public static final Map<EntityType<?>, List<String>> navigationOverrides = new HashMap<>();
+    private static final Map<EntityType<?>, List<String>> navigationOverrides = new HashMap<>();
 
     public static boolean foxesAllowed;
 
@@ -22,10 +22,10 @@ public class PetCaptureToolConfig {
             .comment("Entries in this list define Navigation Overrides for these entities.")
             .comment("Nav Overrides will be used to navigate to NBT tags in the data of the Entity to find its Owner UUID.")
             .comment("Examples: \"minecraft:wolf=Owner\", \"somemod:unconventionally_owned_mob=weirdTag->Owner\"")
-            .define("nbtNavigationOverrides", List.of(), p -> p instanceof String);
+            .define("nbtNavigationOverrides", List.of(), p -> true);
 
     public static final ForgeConfigSpec.BooleanValue FOXES_ALLOWED = BUILDER
-            .comment("If the Pet Capture Tool can capture Foxes that Trust the player")
+            .comment("If the Portable Pet Cage can capture Foxes that Trust the player")
             .define("foxesAllowed", true);
 
     static final ForgeConfigSpec SPEC = BUILDER.build();
@@ -42,6 +42,7 @@ public class PetCaptureToolConfig {
             String[] split = entry.split("=");
             Optional<EntityType<?>> entityOpt = EntityType.byString(split[0]);
             String[] path = split[1].split("->");
+            PetCaptureToolMod.LOGGER.info("loading nav override for {}. path: {}", split[0], split[1]);
 
             entityOpt.ifPresentOrElse(entityType -> navigationOverrides.put(entityType, Arrays.asList(path)),
                     () -> PetCaptureToolMod.LOGGER.error("Found Unknown Entity Type \"{}\" while loading Navigation Overrides.", split[0]));

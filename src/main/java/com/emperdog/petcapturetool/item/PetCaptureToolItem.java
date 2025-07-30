@@ -2,13 +2,14 @@ package com.emperdog.petcapturetool.item;
 
 import com.emperdog.petcapturetool.PetCaptureToolConfig;
 import com.emperdog.petcapturetool.PetCaptureToolMod;
+import com.emperdog.petcapturetool.sound.PetCaptureSoundEvents;
 import com.emperdog.petcapturetool.tag.PetCaptureToolTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Fox;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -37,8 +39,10 @@ public class PetCaptureToolItem extends Item {
         if(entity instanceof LivingEntity livingEntity
                 && stack.getOrCreateTag().getCompound(KEY_ENTITY).isEmpty()
                 && canCapture(livingEntity, player)) {
+            Level level = player.level();
+            level.gameEvent(player, GameEvent.ENTITY_INTERACT, entity.position());
+            level.playSound(player, entity.blockPosition(), PetCaptureSoundEvents.PICK_UP.get(), SoundSource.PLAYERS);
             capture(livingEntity, stack);
-            player.playSound(SoundEvents.BOTTLE_FILL, 1.0f, 1.0f);
         }
         return true;
     }
@@ -49,7 +53,8 @@ public class PetCaptureToolItem extends Item {
         CompoundTag entityTag = tag.getCompound(KEY_ENTITY);
         if(!entityTag.isEmpty()) {
             Player player = context.getPlayer();
-            Optional<Entity> entityOpt = EntityType.create(entityTag, player.level());
+            Level level = context.getLevel();
+            Optional<Entity> entityOpt = EntityType.create(entityTag, level);
 
             BlockPos pos = context.getClickedPos();
             Direction dir = context.getClickedFace();
@@ -64,9 +69,11 @@ public class PetCaptureToolItem extends Item {
                             ownableEntity.getOwnerUUID().toString(), player.getUUID());
                  */
                 entity.setPos(x, y, z);
-                player.level().addFreshEntity(entity);
+                level.addFreshEntity(entity);
+                level.gameEvent(player, GameEvent.ENTITY_PLACE, entity.position());
             });
             tag.remove(KEY_ENTITY);
+            level.playSound(player, pos, PetCaptureSoundEvents.PLACE_DOWN.get(), SoundSource.PLAYERS);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
@@ -75,7 +82,7 @@ public class PetCaptureToolItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag pIsAdvanced) {
         tooltip.add(Component.translatable("item.petcapturetool.capture_tool.desc").withStyle(ChatFormatting.YELLOW));
-        if(stack.hasTag() && stack.getTag().contains(KEY_ENTITY)) {
+        if(level != null && stack.hasTag() && stack.getTag().contains(KEY_ENTITY)) {
             CompoundTag entityTag = stack.getTag().getCompound(KEY_ENTITY);
             Optional<Entity> entityOpt = EntityType.create(entityTag, level);
             entityOpt.ifPresent(entity ->
@@ -100,9 +107,10 @@ public class PetCaptureToolItem extends Item {
         List<String> navOverride = PetCaptureToolConfig.getNavOverride(livingEntity.getType());
         if(navOverride != null && !navOverride.isEmpty()) {
             CompoundTag tag = livingEntity.serializeNBT();
-            String nav = "";
-            for (String s : navOverride) {
-                nav = s;
+            String nav = navOverride.get(0);
+            for (int i = 0; i < navOverride.size() - 1; i++) {
+                nav = navOverride.get(i);
+                //PetCaptureToolMod.LOGGER.info("nav step {}: {}", i, nav);
                 if(tag.contains(nav))
                     tag = tag.getCompound(nav);
                 else {
@@ -110,6 +118,7 @@ public class PetCaptureToolItem extends Item {
                     return null;
                 }
             }
+            //PetCaptureToolMod.LOGGER.info("grabbing tag {} as owner UUID tag of {}", nav, livingEntity.getType().getDescription().getString());
             return tag.getUUID(nav);
         } else if(livingEntity instanceof OwnableEntity ownableEntity) {
             return ownableEntity.getOwnerUUID();
