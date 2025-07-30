@@ -123,10 +123,8 @@ public class PetCaptureToolItem extends Item {
             return ownerUUID.equals(entityOwner);
         else if(PetCaptureToolConfig.foxesAllowed
                 && livingEntity instanceof Fox fox) {
-            Optional<UUID> trusted = fox.getTrustedUUIDs().stream()
-                    .filter(u -> u.equals(ownerUUID))
-                    .findFirst();
-            return trusted.isPresent();
+            return fox.getTrustedUUIDs().stream()
+                    .anyMatch(u -> u.equals(ownerUUID));
         }
         return false;
     }
