@@ -1,6 +1,20 @@
 {
   "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "petcapturetool:item/capture_tool_inert",
+      "predicate": {
+        "petcapturetool:has_entity": 0.0
+      }
+    },
+    {
+      "model": "petcapturetool:item/capture_tool_active",
+      "predicate": {
+        "petcapturetool:has_entity": 1.0
+      }
+    }
+  ],
   "textures": {
-    "layer0": "petcapturetool:item/capture_tool"
+    "layer0": "petcapturetool:item/pet_sphere_inert"
   }
 }

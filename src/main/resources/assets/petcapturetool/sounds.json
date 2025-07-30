@@ -1,8 +1,8 @@
 {
   "item.petcapturetool.pick_up": {
-    "sounds": ["minecraft:block/iron_trapdoor/close1", "minecraft:block/iron_trapdoor/close2", "minecraft:block/iron_trapdoor/close3", "minecraft:block/iron_trapdoor/close4"]
+    "sounds": ["minecraft:item/bottle/fill1", "minecraft:item/bottle/fill2", "minecraft:item/bottle/fill3", "minecraft:item/bottle/fill4"]
   },
   "item.petcapturetool.release": {
-    "sounds": ["minecraft:block/iron_trapdoor/open1", "minecraft:block/iron_trapdoor/open2", "minecraft:block/iron_trapdoor/open3", "minecraft:block/iron_trapdoor/open4"]
+    "sounds": ["minecraft:item/bottle/empty1", "minecraft:item/bottle/empty2"]
   }
 }

@@ -1,5 +1,5 @@
 {
-  "item.petcapturetool.capture_tool": "Portable Pet Cage",
+  "item.petcapturetool.capture_tool": "Portable Pet Sphere",
   "item.petcapturetool.capture_tool.desc": "Smack an Entity to pick it up, Use on a Block to release.",
   "item.petcapturetool.capture_tool.contained_entity": "Contains: %1$s",
   "message.petcapturetool.never_capturable": "%1$s can't be captured."

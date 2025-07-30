@@ -60,7 +60,7 @@ public class PetCaptureToolMod {
 
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-
+            PetCaptureToolClient.init();
         }
     }
 }

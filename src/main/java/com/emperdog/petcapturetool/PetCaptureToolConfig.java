@@ -25,7 +25,7 @@ public class PetCaptureToolConfig {
             .define("nbtNavigationOverrides", List.of(), p -> true);
 
     public static final ForgeConfigSpec.BooleanValue FOXES_ALLOWED = BUILDER
-            .comment("If the Portable Pet Cage can capture Foxes that Trust the player")
+            .comment("If the Portable Pet Sphere can capture Foxes that Trust the player")
             .define("foxesAllowed", true);
 
     static final ForgeConfigSpec SPEC = BUILDER.build();
