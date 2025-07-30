@@ -21,7 +21,7 @@ public class PetCaptureToolConfig {
     public static final ForgeConfigSpec.ConfigValue<List<?>> NAV_OVERRIDES = BUILDER
             .comment("Entries in this list define Navigation Overrides for these entities.")
             .comment("Nav Overrides will be used to navigate to NBT tags in the data of the Entity to find its Owner UUID.")
-            .comment("Example: \"minecraft:wolf=Owner\"")
+            .comment("Examples: \"minecraft:wolf=Owner\", \"somemod:unconventionally_owned_mob=weirdTag->Owner\"")
             .define("nbtNavigationOverrides", List.of(), p -> p instanceof String);
 
     public static final ForgeConfigSpec.BooleanValue FOXES_ALLOWED = BUILDER

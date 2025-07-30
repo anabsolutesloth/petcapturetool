@@ -1,6 +1,7 @@
 package com.emperdog.petcapturetool.item;
 
 import com.emperdog.petcapturetool.PetCaptureToolConfig;
+import com.emperdog.petcapturetool.PetCaptureToolMod;
 import com.emperdog.petcapturetool.tag.PetCaptureToolTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -102,7 +103,12 @@ public class PetCaptureToolItem extends Item {
             String nav = "";
             for (String s : navOverride) {
                 nav = s;
-                tag = tag.getCompound(nav);
+                if(tag.contains(nav))
+                    tag = tag.getCompound(nav);
+                else {
+                    PetCaptureToolMod.LOGGER.warn("Could not find \"{}\" while navigating tag of entity \"{}\"", nav, livingEntity.getName());
+                    return null;
+                }
             }
             return tag.getUUID(nav);
         } else if(livingEntity instanceof OwnableEntity ownableEntity) {
