@@ -1,0 +1,6 @@
+{
+  "item.petcapturetool.capture_tool": "Pet Capture Tool",
+  "item.petcapturetool.capture_tool.desc": "Smack an Entity to capture, Use on a Block to release.",
+  "item.petcapturetool.capture_tool.contained_entity": "Contains: %1$s",
+  "message.petcapturetool.never_capturable": "%1$s can't be captured."
+}
